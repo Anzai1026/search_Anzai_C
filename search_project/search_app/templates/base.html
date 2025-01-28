@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ページのタイトル{% endblock %}</title>
+    <!-- Django staticタグの読み込み -->
+    {% load static %}
+    <!-- Bootstrap CSSの追加 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font AwesomeアイコンのCDN読み込み -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        header .logo {
+    height: 50px; /* ロゴの高さを調整 */
+    width: auto; /* アスペクト比を保持 */
+    margin-right: 20px; /* テキストや他の要素との余白 */
+    transition: transform 0.3s ease; /* ホバー時のアニメーション */
+}
+
+/* ホバー時に少し拡大 */
+header .logo:hover {
+    transform: scale(1.1);
+}
+
+/* ヘッダー内のh1の位置調整 */
+header h1 {
+    display: flex;
+    align-items: center; /* 垂直方向に中央揃え */
+    margin: 0; /* 不要な余白を削除 */
+}
+        /* ヘッダーを横並びに固定 */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: black;
+            z-index: 1000; /* 前面に表示 */
+        }
+
+        /* コンテンツがヘッダーの下から始まるように余白を追加 */
+        .content {
+            margin-top: 70px; /* ヘッダーの高さに合わせて調整 */
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 24px; /* アイコン風のフォントサイズ */
+        }
+
+        h1 {
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            transition: transform 0.3s, color 0.3s ease; /* アニメーションを追加 */
+        }
+
+        .nav-button:hover {
+            transform: scale(1.2); /* アイコンの拡大 */
+            color: rgb(127, 243, 127); /* ホバー時に色を変更 */
+        }
+
+        .nav-button:active {
+            transform: scale(0.9); /* クリック時に少し縮小 */
+        }
+        /* ボタン風リンクのスタイル */
+.rounded-button {
+    display: inline-block;       /* ボタンとして見せる */
+    padding: 10px 20px;          /* 内側の余白 */
+    color: white;               /* テキストの色を白 */
+    border: 2px solid white;    /* 白い枠線 */
+    border-radius: 20px;        /* 角を丸く */
+    text-decoration: none;      /* 下線を削除 */
+    font-size: 16px;            /* テキストサイズ */
+    text-align: center;         /* テキストを中央寄せ */
+    background: transparent;    /* 背景を透明に */
+}
+
+/* ホバー時のエフェクト */
+.rounded-button:hover {
+    background: white;          /* ホバー時に背景を白に */
+    color: black;               /* テキストを黒に */
+    transition: 0.3s;           /* スムーズな変化 */
+}
+
+/* 丸みのある背景付きボタン風スタイル */
+.text-button {
+    display: inline-block;       /* ボタンとしての見た目 */
+    padding: 12px 25px;          /* 内側の余白 */
+    color: white;               /* テキストの色を白 */
+    border: none;               /* 枠線をなし */
+    border-radius: 20px;        /* 角を丸く */
+    text-decoration: none;      /* 下線を削除 */
+    background: black; /* 背景を半透明の白 */
+    font-size: 16px;            /* テキストサイズ */
+    text-align: center;         /* テキストを中央寄せ */
+    cursor: pointer;            /* カーソルをポインタに変更 */
+}
+
+/* ホバー時のエフェクト */
+.text-button:hover {
+    background: white;          /* ホバー時に背景を完全な白に */
+    color: black;               /* テキストを黒に */
+    transition: 0.3s;           /* スムーズな変化 */
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <a href="{% url 'search_view' %}">
+                <img src="{% static 'images/1676155596333-zWAr5GFEU8-removebg-preview (1).png' %}" alt="logo" class="logo">
+            </a>
+        </h1>
+        <nav>
+            <ul>
+                <!-- ホームボタン (Font Awesomeアイコン) -->
+                <li>
+                    <a href="{% url 'search_view' %}">
+                        <button class="nav-button"><i class="fas fa-home"></i></button>  <!-- ホームのアイコン -->
+                    </a>
+                </li>
+                <!-- リストボタン (Font Awesomeアイコン) -->
+                <li>
+                    <a href="{% url 'product_list' %}">
+                        <button class="nav-button"><i class="fas fa-list"></i></button>  <!-- リストのアイコン -->
+                    </a>
+                </li>
+                <!-- ポストボタン (Font Awesomeアイコン) -->
+                <li>
+                    <a href="{% url 'product_create' %}">
+                        <button class="nav-button"><i class="fas fa-plus"></i></button>  <!-- ポストのアイコン -->
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'login' %}" class="text-button">
+                        Sign in
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'signup' %}" class="rounded-button">
+                        Sign up
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ページごとのコンテンツ -->
+    <div class="container content mt-5">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Bootstrap JSの追加 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

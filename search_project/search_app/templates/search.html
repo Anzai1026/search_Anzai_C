@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}search_view_page{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">search_view</h1>
+
+    <form method="get" action="{% url 'search_view' %}" class="bg-light p-4 rounded shadow-sm mb-5">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                {{ form.as_p }}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="category" class="form-label">Category:</label>
+                <select name="category" class="form-select">
+                    <option value="">ALL</option>
+                    <option value="本" {% if request.GET.category == 'books' %}selected{% endif %}>books</option>
+                    <option value="電子機器" {% if request.GET.category == 'electronics' %}selected{% endif %}>electronics</option>
+                    <option value="衣服" {% if request.GET.category == 'clothes' %}selected{% endif %}>clothes</option>
+                    <option value="家具" {% if request.GET.category == 'furniture' %}selected{% endif %}>furniture</option>
+                    <!-- 他のカテゴリを追加 -->
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="min_price" class="form-label">lowest price:</label>
+                <input type="number" name="min_price" min="0" class="form-control" value="{{ request.GET.min_price }}">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="max_price" class="form-label">highest price:</label>
+                <input type="number" name="max_price" min="0" class="form-control" value="{{ request.GET.max_price }}">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="sort" class="form-label">sort:</label>
+                <select name="sort" class="form-select">
+                    <option value="name" {% if request.GET.sort == 'name' %}selected{% endif %}>by name</option>
+                    <option value="price_asc" {% if request.GET.sort == 'price_asc' %}selected{% endif %}>cheaper</option>
+                    <option value="price_desc" {% if request.GET.sort == 'price_desc' %}selected{% endif %}>expensive</option>
+                </select>
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary mt-3">Search</button>
+        </div>
+    </form>
+
+    <h2 class="text-center mb-4">Search result</h2>
+    <ul class="list-group mb-5">
+        {% for product in page_obj %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ product.name }}</span>
+                <span>{{ product.price }}</span>
+            </li>
+        {% empty %}
+            <li class="list-group-item text-center">No corresponding product found.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- ページネーションリンク -->
+    <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">最初</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">前へ</a>
+                    </li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <span class="page-link">ページ {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">次へ</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">最後</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endblock %}

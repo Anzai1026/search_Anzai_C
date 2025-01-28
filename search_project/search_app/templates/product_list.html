@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}商品一覧{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">商品一覧</h1>
+
+    <!-- 商品リスト -->
+    <div class="row justify-content-center">
+        {% for product in products %}
+        <div class="col-lg-4 col-md-6 mb-4 d-flex justify-content-center">
+            <!-- 商品詳細ページへのリンク -->
+            <a href="{% url 'product_detail' product.id %}" class="text-decoration-none text-dark" style="width: 18rem;">
+                <div class="card h-100 shadow-sm">
+                    <!-- 商品画像 -->
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'default.jpg' %}" class="card-img-top" alt="デフォルト画像">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text text-muted">{{ product.price }}円</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center">商品がありません。</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
